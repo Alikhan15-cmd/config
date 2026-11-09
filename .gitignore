@@ -1,0 +1,38 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.env
+
+# Build and packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# IDE and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing and coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Binary files, images and assignment PDF
+*.pdf
+*.zip
+*.tar.gz
+*.whl
+*.png
+*.jpg
+*.jpeg
+*.svg
+output/
