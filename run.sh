@@ -11,5 +11,5 @@ if [ $# -eq 0 ]; then
 elif [ "$1" = "test" ]; then
     "$PYTHON_BIN" -m unittest discover -s tests -p "test_*.py" -v
 else
-    "$PYTHON_BIN" "$@"
+    "$PYTHON_BIN" -m src.main "$@"
 fi

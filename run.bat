@@ -22,5 +22,5 @@ if "%~1"=="" (
 ) else if "%~1"=="test" (
     "%PYTHON_BIN%" -m unittest discover -s tests -p "test_*.py" -v
 ) else (
-    "%PYTHON_BIN%" %*
+    "%PYTHON_BIN%" -m src.main %*
 )
