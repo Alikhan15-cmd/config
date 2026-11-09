@@ -9,9 +9,11 @@ from src.constants import (
     EXIT_CODE_ERROR,
     EXIT_CODE_SUCCESS,
     ONE,
+    THREE,
     TWO,
     ZERO,
 )
+from src.graph import build_dependency_graph
 
 
 def build_argument_parser() -> argparse.ArgumentParser:
@@ -66,6 +68,34 @@ def run_stage_two(config_path: str) -> int:
     return EXIT_CODE_SUCCESS
 
 
+def run_stage_three(config_path: str) -> int:
+    """Execute Stage 3: build graph using recursive DFS and display."""
+    config = load_config(config_path)
+    graph = build_dependency_graph(
+        root_package=config.package_name,
+        version=config.package_version,
+        repo_url=config.repository_url,
+        test_mode=config.test_mode,
+        max_depth=config.max_depth,
+        filter_substring=config.filter_substring,
+    )
+    print("=== Этап 3. Построение графа зависимостей (DFS) ===")
+    print(f"Корень: {config.package_name} (глубина: {config.max_depth})")
+    print(f"Вершины ({len(graph.nodes)}): {', '.join(sorted(graph.nodes))}")
+    print(f"Ребра ({len(graph.edges)}):")
+    for src_node, tgt_node in sorted(graph.edges):
+        print(f"  {src_node} -> {tgt_node}")
+
+    if len(graph.cycles) > ZERO:
+        print(f"Обнаружены циклы ({len(graph.cycles)}):")
+        for cycle in graph.cycles:
+            print(f"  {' -> '.join(cycle)}")
+    else:
+        print("Циклических зависимостей не обнаружено.")
+
+    return EXIT_CODE_SUCCESS
+
+
 def main(argv=None) -> int:
     """Main CLI entry point."""
     parser = build_argument_parser()
@@ -76,6 +106,8 @@ def main(argv=None) -> int:
             return run_stage_one(args.config)
         if args.stage == TWO:
             return run_stage_two(args.config)
+        if args.stage == THREE:
+            return run_stage_three(args.config)
         print(f"Stage {args.stage} is not yet implemented.")
         return EXIT_CODE_SUCCESS
     except (ConfigError, CollectorError) as err:
