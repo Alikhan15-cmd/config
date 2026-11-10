@@ -19,7 +19,7 @@ from src.graph import build_dependency_graph
 def build_argument_parser() -> argparse.ArgumentParser:
     """Construct command-line argument parser."""
     parser = argparse.ArgumentParser(
-        description="Dependency Graph Visualizer for Python packages (pip)"
+        description="Dependency Graph Analyzer for Python packages (pip)"
     )
     parser.add_argument(
         "--config",
@@ -31,9 +31,9 @@ def build_argument_parser() -> argparse.ArgumentParser:
         "--stage",
         "-s",
         type=int,
-        default=ONE,
-        choices=[1, 2, 3, 4, 5],
-        help="Target stage to execute (1..5, default: 1)",
+        default=THREE,
+        choices=[1, 2, 3],
+        help="Target stage to execute (1..3, default: 3)",
     )
     return parser
 
@@ -106,10 +106,7 @@ def main(argv=None) -> int:
             return run_stage_one(args.config)
         if args.stage == TWO:
             return run_stage_two(args.config)
-        if args.stage == THREE:
-            return run_stage_three(args.config)
-        print(f"Stage {args.stage} is not yet implemented.")
-        return EXIT_CODE_SUCCESS
+        return run_stage_three(args.config)
     except (ConfigError, CollectorError) as err:
         print(f"Error: {err}", file=sys.stderr)
         return EXIT_CODE_ERROR
