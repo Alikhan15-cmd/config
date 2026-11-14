@@ -181,7 +181,7 @@ def run_stage_five(config_path: str, run_demo: bool = False) -> int:
         ]
         for name, repo_file in demos:
             _visualize_single_package(
-                name, "1.0.0", repo_file, True, 5, ""
+                name, "1.0.0", repo_file, True, FIVE, ""
             )
 
     print("=== Сравнение со штатными средствами (pipdeptree) ===")

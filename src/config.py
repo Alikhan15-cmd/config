@@ -63,8 +63,8 @@ class AppConfig:
         return "\n".join(lines)
 
 
-def _validate_types(data: dict) -> None:
-    """Validate data types of individual config values."""
+def _validate_string_fields(data: dict) -> None:
+    """Validate string configuration values."""
     if not isinstance(data[KEY_PACKAGE_NAME], str):
         raise ConfigError("package_name must be a string")
     if len(data[KEY_PACKAGE_NAME].strip()) == ZERO:
@@ -75,13 +75,19 @@ def _validate_types(data: dict) -> None:
     if len(data[KEY_REPOSITORY_URL].strip()) == ZERO:
         raise ConfigError("repository_url cannot be empty")
 
-    if not isinstance(data[KEY_TEST_MODE], bool):
-        raise ConfigError("test_mode must be a boolean (true/false)")
-
     if not isinstance(data[KEY_PACKAGE_VERSION], str):
         raise ConfigError("package_version must be a string")
     if len(data[KEY_PACKAGE_VERSION].strip()) == ZERO:
         raise ConfigError("package_version cannot be empty")
+
+    if not isinstance(data[KEY_FILTER_SUBSTRING], str):
+        raise ConfigError("filter_substring must be a string")
+
+
+def _validate_numeric_and_bool_fields(data: dict) -> None:
+    """Validate numeric and boolean configuration values."""
+    if not isinstance(data[KEY_TEST_MODE], bool):
+        raise ConfigError("test_mode must be a boolean (true/false)")
 
     depth = data[KEY_MAX_DEPTH]
     if isinstance(depth, bool) or not isinstance(depth, int):
@@ -89,8 +95,11 @@ def _validate_types(data: dict) -> None:
     if depth < MIN_DEPTH:
         raise ConfigError(f"max_depth must be >= {MIN_DEPTH}")
 
-    if not isinstance(data[KEY_FILTER_SUBSTRING], str):
-        raise ConfigError("filter_substring must be a string")
+
+def _validate_types(data: dict) -> None:
+    """Validate data types of individual config values."""
+    _validate_string_fields(data)
+    _validate_numeric_and_bool_fields(data)
 
 
 def _validate_paths(data: dict) -> None:
