@@ -1,8 +1,8 @@
 {
-  "package_name": "requests",
+  "package_name": "vegaml",
   "repository_url": "https://pypi.org/pypi",
   "test_mode": false,
-  "package_version": "2.31.0",
+  "package_version": "*",
   "max_depth": 3,
   "filter_substring": ""
 }

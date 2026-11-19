@@ -1,6 +1,6 @@
 {
   "package_name": "A",
-  "repository_url": "test_repos/simple_repo.json",
+  "repository_url": "test_repos/cyclic_repo.json",
   "test_mode": true,
   "package_version": "1.0.0",
   "max_depth": 3,

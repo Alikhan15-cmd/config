@@ -128,7 +128,7 @@ def _try_fetch_plantuml_server(puml_text: str, svg_path: str) -> bool:
     """Try to render diagram via public PlantUML web service."""
     try:
         encoded = encode_plantuml(puml_text)
-        url = f"{PLANTUML_BASE_URL}/svg/~1{encoded}"
+        url = f"{PLANTUML_BASE_URL}/svg/{encoded}"
         req = urllib.request.Request(
             url,
             headers={"User-Agent": "PlantUMLClient/1.0"},
