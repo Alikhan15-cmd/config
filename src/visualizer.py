@@ -16,6 +16,10 @@ PLANTUML_CHARS = (
 )
 PLANTUML_BASE_URL = "http://www.plantuml.com/plantuml"
 
+def _make_alias(node: str) -> str:
+    """Convert package name to a valid PlantUML alias."""
+    return node.replace("-", "_").replace(".", "_")
+
 
 def generate_plantuml_text(
     graph: DependencyGraph,
@@ -25,16 +29,20 @@ def generate_plantuml_text(
     lines = ["@startuml", "skinparam monochrome true"]
 
     for node in sorted(graph.nodes):
+        alias = _make_alias(node)
         if node == root_node:
-            lines.append(f'rectangle "{node}" as {node} #LightBlue')
+            lines.append(f'rectangle "{node}" as {alias} #LightBlue')
         else:
-            lines.append(f'rectangle "{node}" as {node}')
+            lines.append(f'rectangle "{node}" as {alias}')
 
     for src_pkg, tgt_pkg in sorted(graph.edges):
-        lines.append(f"{src_pkg} --> {tgt_pkg}")
+        src_alias = _make_alias(src_pkg)
+        tgt_alias = _make_alias(tgt_pkg)
+        lines.append(f"{src_alias} --> {tgt_alias}")
 
     lines.append("@enduml")
     return "\n".join(lines)
+
 
 
 def _encode_plantuml_3bytes(byte1: int, byte2: int, byte3: int) -> str:
